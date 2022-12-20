@@ -46,9 +46,9 @@ public class BlitRenderPassFeature : ScriptableRendererFeature
                 Blit(commandBuffer, source, tempRenderTargetHandler.Identifier(), matList[i]);
                 Blit(commandBuffer, tempRenderTargetHandler.Identifier(), source);
             }
-
-            //RenderTargetIdentifier og = new RenderTargetIdentifier();
-            //commandBuffer.ConvertTexture(source, og);
+            
+            RenderTargetIdentifier og = new RenderTargetIdentifier();
+            commandBuffer.ConvertTexture(source, og);
            
             if (outlineAdditionMaterial != null)
             {

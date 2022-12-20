@@ -86,17 +86,17 @@ Shader "Unlit/KuwaharaTest"
                 colImproved[1] = improvedKuwaharaBoxKernel(_MainTex, i.uv, _Range, float2(1,-1));
                 colImproved[2] = improvedKuwaharaBoxKernel(_MainTex, i.uv, _Range, float2(-1,1));
                 colImproved[3] = improvedKuwaharaBoxKernel(_MainTex, i.uv, _Range, float2(-1,-1));
-                float lowst = colImproved[0];
+                float lowst = colImproved[0].w;
                 fixed4 readyColor;
-                for(int i =0;i<4;i++)
+                [unroll]
+                for(int j =0;j<4;j++)
                 {
-                    if(colImproved[i].w<lowst)
+                    if(colImproved[j].w<lowst)
                     {
-                        lowst = colImproved[i];
-                        readyColor = fixed4(colImproved[i].x, colImproved[i].y,colImproved[i].z,1);
+                        lowst = colImproved[j];
+                        readyColor = fixed4(colImproved[j].x, colImproved[j].y,colImproved[j].z,1);
                     }
                 }
-                
                 return readyColor;
                 
             }

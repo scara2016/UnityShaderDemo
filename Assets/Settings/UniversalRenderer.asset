@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 0
   settings:
-    matList: []
-    outlineAdditionMaterial: {fileID: 2100000, guid: ce8ec16ac597584479d9369ea39b1366, type: 2}
+    matList:
+    - {fileID: 2100000, guid: ce8ec16ac597584479d9369ea39b1366, type: 2}
+    outlineAdditionMaterial: {fileID: 0}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,8 +87,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 0
   settings:
-    matList: []
-    outlineAdditionMaterial: {fileID: 2100000, guid: 637ee0f1e9d6a1546a7f4ca310569e9a, type: 2}
+    matList:
+    - {fileID: 2100000, guid: 637ee0f1e9d6a1546a7f4ca310569e9a, type: 2}
+    outlineAdditionMaterial: {fileID: 0}
 --- !u!114 &4941758611164918995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,8 +105,8 @@ MonoBehaviour:
   m_Active: 0
   settings:
     matList:
-    - {fileID: 0}
-    outlineAdditionMaterial: {fileID: 2100000, guid: 1fbae8239a7f33542b9385367bc70a71, type: 2}
+    - {fileID: 2100000, guid: 1fbae8239a7f33542b9385367bc70a71, type: 2}
+    outlineAdditionMaterial: {fileID: 0}
 --- !u!114 &6009753749163904179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,5 +121,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Active: 0
   settings:
-    matList: []
-    outlineAdditionMaterial: {fileID: 2100000, guid: 45febcd3a6b86d74da3890032d3b998f, type: 2}
+    matList:
+    - {fileID: 2100000, guid: 45febcd3a6b86d74da3890032d3b998f, type: 2}
+    outlineAdditionMaterial: {fileID: 0}
