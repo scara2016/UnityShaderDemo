@@ -3,6 +3,7 @@ Shader "Unlit/KuwaharaTest"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _Range("Range", float) = 1
     }
     SubShader
     {
@@ -30,6 +31,7 @@ Shader "Unlit/KuwaharaTest"
             };
 
             sampler2D _MainTex;
+            float _Range;
             float4 _MainTex_ST;
             float4 _MainTex_TexelSize;
 
@@ -40,69 +42,66 @@ Shader "Unlit/KuwaharaTest"
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 return o;
             }
-
             
-
-            fixed4 kuwaharaBoxKernel(sampler2D MainTex, float2 uv){
+            fixed4 improvedKuwaharaBoxKernel(sampler2D mainTex, float2 uv, float range, float2 origin)
+            {
                 float2 delta = float2(_MainTex_TexelSize.z,_MainTex_TexelSize.w);
+                origin = range*origin;
 			    delta = 1/delta;
-                float4 avgColours[4] = {float4(0,0,0,0),float4(0,0,0,0),float4(0,0,0,0),float4(0,0,0,0)};
-                float avgLum[4] = {0,0,0,0};
-                float avgLumSqr[4] = {0,0,0,0};
-                float stdDev[4] = {0,0,0,0};
                 float4 col;
-                float lum;
-                float lumSqr;
-                [unroll]
-                    for(int i=-3;i<=3;i++){
-                    [unroll]
-                        for(int j=-3;j<=3;j++){
-                            col = tex2D(MainTex, uv + float2(i,j) * delta);
-                            lum = Luminance(col);
-                            lumSqr = lum*lum;
-                            if(i>=0&&j>=0){
-                                avgColours[0] += col; 
-                                avgLum[0] += lum;
-                                avgLumSqr[0] += lum*lum;
-                            }
-                            if(i<=0&&j>=0){
-                                avgColours[1] += col; 
-                                avgLum[1] += lum;
-                                avgLumSqr[1] += lum*lum;
-                            }
-                            if(i<=0&&j<=0){
-                                avgColours[2] += col; 
-                                avgLum[2] += lum;
-                                avgLumSqr[2] += lum*lum; 
-                            }
-                            if(i>=0&&j<=0){
-                                avgColours[3] += col; 
-                                avgLum[3] += lum; 
-                                avgLumSqr[3] += lum*lum;
-                            }
-                    }
+                float lum = 0;
+                float4 avgColor = float4(0,0,0,0);
+                float avgLum = 0;
+                for(int i=-range;i<range;i++)
+                {
+                    for (int j=-range;j<range;j++)
+                    {
+                        col = tex2D(mainTex,uv+(origin*delta+(float2(i,j)*delta)));
+                        avgColor += col;
+                        avgLum += Luminance(col);
+                    }   
                 }
-                float lowst = 0;
-                float4 selectedColour = float4(0,0,0,0);
-                [unroll]
-                    for(int i=0;i<4;i++){
-                        avgColours[i] = avgColours[i]/9;
-                        avgLum[i] = avgLum[i]/9;
-                        stdDev[i] = abs((avgLumSqr[i]/9)-(avgLum[i]*avgLum[i]));
-                        if(stdDev[i]>lowst){
-                            selectedColour = avgColours[i];
-                            lowst = stdDev[i];
-                        }
-                    }
-                return selectedColour;
+                avgColor = avgColor/((3+((range-1)*2))*(3+((range-1)*2)));
+                avgLum = avgLum/((3+((range-1)*2))*(3+((range-1)*2)));
+                float avgLumSqr = 0;
+                float stdDev = 0;
+                
+                 for(int i=-range;i<range;i++)
+                 {
+                      for (int j=-range;j<range;j++)
+                      {
+                          col = tex2D(mainTex,uv+(origin*delta+(float2(i,j)*delta)));
+                          lum += Luminance(col);
+                          avgLumSqr +=  (lum-avgLum)*(lum-avgLum);
+                      }   
+                 }
+                 stdDev = sqrt(avgLumSqr/((3+((range-1)*2))*(3+((range-1)*2))));
+                return fixed4(avgColor.x,avgColor.y,avgColor.z,stdDev);
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                fixed4 col = kuwaharaBoxKernel(_MainTex, i.uv);
-                return col;
+                fixed4 colImproved[4];
+                colImproved[0] = improvedKuwaharaBoxKernel(_MainTex, i.uv, _Range, float2(1,1));
+                colImproved[1] = improvedKuwaharaBoxKernel(_MainTex, i.uv, _Range, float2(1,-1));
+                colImproved[2] = improvedKuwaharaBoxKernel(_MainTex, i.uv, _Range, float2(-1,1));
+                colImproved[3] = improvedKuwaharaBoxKernel(_MainTex, i.uv, _Range, float2(-1,-1));
+                float lowst = colImproved[0];
+                fixed4 readyColor;
+                for(int i =0;i<4;i++)
+                {
+                    if(colImproved[i].w<lowst)
+                    {
+                        lowst = colImproved[i];
+                        readyColor = fixed4(colImproved[i].x, colImproved[i].y,colImproved[i].z,1);
+                    }
+                }
+                
+                return readyColor;
+                
             }
+            
+            
             ENDCG
         }
     }

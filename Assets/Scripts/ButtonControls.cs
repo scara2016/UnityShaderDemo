@@ -3,12 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class ButtonControls : MonoBehaviour
 {
     [SerializeField]
     private UniversalRendererData UniversalRendererData;
     private ScriptableRendererFeature[] RendererFeatures;
+    [SerializeField]
+    private Material KuwaharaMaterial;
+    [SerializeField]
+    private Material BoxBlurMaterial;
+
+    [SerializeField] private Slider KuwaharaSlider;
+    [SerializeField] private Slider BoxSlider;
     private void Start()
     {
         RendererFeatures = UniversalRendererData.rendererFeatures.ToArray();
@@ -50,6 +58,15 @@ public class ButtonControls : MonoBehaviour
             rendererFeature.SetActive(false);
         }
         RendererFeatures[3].SetActive(true);
+    }
+
+    public void KuwaharaSliderSetter()
+    {
+        KuwaharaMaterial.SetFloat("_Range",KuwaharaSlider.value);
+    }
+    public void BoxSliderSetter()
+    {
+        BoxBlurMaterial.SetFloat("_Range",BoxSlider.value);
     }
     public void None()
     {
