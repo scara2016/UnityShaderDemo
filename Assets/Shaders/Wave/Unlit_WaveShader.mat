@@ -26,8 +26,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Amplitude: 0.3
-    - _Speed: 1.7
-    - _Wavelength: 5
+    - _Amplitude: 0.07
+    - _Speed: 1.55
+    - _Wavelength: 1.13
     m_Colors: []
   m_BuildTextureStacks: []
