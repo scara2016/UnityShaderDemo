@@ -8,6 +8,10 @@ namespace UnityTemplateProjects
 {
     public class SimpleCameraController : MonoBehaviour
     {
+        private void Awake()
+        {
+            this.GetComponent<Camera>().depthTextureMode = DepthTextureMode.Depth;
+        }
         class CameraState
         {
             public float yaw;

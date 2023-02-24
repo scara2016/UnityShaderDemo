@@ -3,13 +3,17 @@ Shader "Unlit/DepthOfField"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+        _FocusRange ("Focus Range", Range(0.1, 10.0)) = 3.0
+        _FocusDistance ("Focus Disctance", Range(0.1, 100.0)) = 10.0
+        
     }
 
     CGINCLUDE
         #include "UnityCG.cginc"
 
-        sampler2D _MainTex;
+        sampler2D _MainTex, _CameraDepthTexture;
         float4 _MainTex_TexelSize;
+        float _FocusDistance, _FocusRange;
 
         struct VertexDate {
             float4 vertex : POSITION;
@@ -50,6 +54,19 @@ Shader "Unlit/DepthOfField"
                 fixed4 col = tex2D(_MainTex, i.uv);
                 return col;
             }
+            ENDCG
+        }
+        Pass
+        {
+            CGPROGRAM
+                #pragma vertex VertexProgram
+                #pragma fragment FragmentProgram
+                
+                half4 FragmentProgram (Interpolaters i) : SV_TARGET {
+                    half depth = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture, i.uv);
+                    float coc = (depth - _FocusDistance) / _FocusRange;
+                    return coc;
+               }
             ENDCG
         }
     }
