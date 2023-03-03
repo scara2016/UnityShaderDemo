@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecad37b82c0484a4698b3c32abba4297, type: 3}
   m_Name: DoF
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     matList:
     - {fileID: 2100000, guid: c9496e2f580743c43aa5fbbf602bf975, type: 2}
@@ -54,7 +54,8 @@ MonoBehaviour:
   - {fileID: -6185068239133622027}
   - {fileID: 2007320222027900186}
   - {fileID: -6761067350011107886}
-  m_RendererFeatureMap: d374363846a79444b38c7c9e31ef6653f5c0e3d634392aaa1a656e501b6fdb1bd2a5181c11dd2ba2
+  - {fileID: 636179596856985681}
+  m_RendererFeatureMap: d374363846a79444b38c7c9e31ef6653f5c0e3d634392aaa1a656e501b6fdb1bd2a5181c11dd2ba251080304f929d408
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -92,6 +93,21 @@ MonoBehaviour:
   m_ClusteredRendering: 0
   m_TileSize: 32
   m_IntermediateTextureMode: 1
+--- !u!114 &636179596856985681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2b78c80707da274497c430c26daac6d, type: 3}
+  m_Name: ComputeFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  computeShader: {fileID: 7200000, guid: 73b44ecd8a0766d4d9c9706dbeb83428, type: 3}
+  BlockSize: 3
 --- !u!114 &2007320222027900186
 MonoBehaviour:
   m_ObjectHideFlags: 0
