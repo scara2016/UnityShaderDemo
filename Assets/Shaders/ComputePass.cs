@@ -46,7 +46,7 @@ public class ComputePass : ScriptableRenderPass
     public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
     {
         var cameraTargetDescriptor = renderingData.cameraData.cameraTargetDescriptor;
-        _cameraToWorldMatrix = renderingData.cameraData.GetGPUProjectionMatrix().inverse;
+        _cameraToWorldMatrix = renderingData.cameraData.GetGPUProjectionMatrix();
         _cameraInverseProjectionMatrix = renderingData.cameraData.GetProjectionMatrix();
         cameraTargetDescriptor.enableRandomWrite = true;
         cmd.GetTemporaryRT(_renderTargetId, cameraTargetDescriptor);
