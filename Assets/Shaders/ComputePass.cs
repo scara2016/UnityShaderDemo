@@ -11,6 +11,8 @@ public class ComputePass : ScriptableRenderPass
     string _kernelName;
     private int _blockSize;
     private int _renderTargetId;
+    private Matrix4x4 _cameraToWorldMatrix;
+    private Matrix4x4 _cameraInverseProjectionMatrix;
     
     RenderTargetIdentifier _renderTargetIdentifier;
     int _renderTextureWidth;
@@ -21,6 +23,7 @@ public class ComputePass : ScriptableRenderPass
         this._kernelName = _kernelName;
         this._blockSize = blockSize;
         _renderTargetId = renderTargetId;
+        
     }
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
@@ -29,9 +32,11 @@ public class ComputePass : ScriptableRenderPass
         computeShader.GetKernelThreadGroupSizes(mainKernel, out uint xGroupSize, out uint yGroupSize, out _);
         cmd.Blit(renderingData.cameraData.targetTexture, _renderTargetIdentifier);
         cmd.SetComputeTextureParam(computeShader, mainKernel, _renderTargetId, _renderTargetIdentifier);
+        cmd.SetComputeMatrixParam(computeShader,Shader.PropertyToID("_CameraToWorld"), _cameraToWorldMatrix );
+        cmd.SetComputeMatrixParam(computeShader,Shader.PropertyToID("_CameraInverseProjection"), _cameraInverseProjectionMatrix );
         cmd.DispatchCompute(computeShader, mainKernel,
-            Mathf.CeilToInt(_renderTextureWidth / (float) _blockSize / xGroupSize),
-            Mathf.CeilToInt(_renderTextureHeight / (float) _blockSize / yGroupSize),1);
+            Mathf.CeilToInt(_renderTextureWidth /(float) xGroupSize),
+            Mathf.CeilToInt(_renderTextureHeight /(float) yGroupSize),1);
         cmd.Blit(_renderTargetIdentifier, renderingData.cameraData.renderer.cameraColorTarget);
         context.ExecuteCommandBuffer(cmd);
         cmd.Clear();
@@ -41,9 +46,13 @@ public class ComputePass : ScriptableRenderPass
     public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
     {
         var cameraTargetDescriptor = renderingData.cameraData.cameraTargetDescriptor;
+        _cameraToWorldMatrix = renderingData.cameraData.GetGPUProjectionMatrix().inverse;
+        _cameraInverseProjectionMatrix = renderingData.cameraData.GetProjectionMatrix();
+        cameraTargetDescriptor.enableRandomWrite = true;
+        cmd.GetTemporaryRT(_renderTargetId, cameraTargetDescriptor);
         _renderTargetIdentifier = new RenderTargetIdentifier(_renderTargetId);
-        _renderTextureWidth = cameraTargetDescriptor.width;
-        _renderTextureHeight = cameraTargetDescriptor.height;
+        _renderTextureWidth = Screen.width;
+        _renderTextureHeight = Screen.height;
     }
 
     public override void OnCameraCleanup(CommandBuffer cmd)
