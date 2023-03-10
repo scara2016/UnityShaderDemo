@@ -7,6 +7,7 @@ public class ComputeFeature : ScriptableRendererFeature
 {
     private ComputePass _computePass;
     private bool _initialized;
+    public Texture SkyboxTexture;
     public ComputeShader computeShader;
     private string KernelName = "CSMain";
     [Range(2, 40)] public int BlockSize = 3;
@@ -21,6 +22,7 @@ public class ComputeFeature : ScriptableRendererFeature
         int renderTargetId = Shader.PropertyToID("Result");
         
         _computePass = new ComputePass(computeShader, KernelName, BlockSize, renderTargetId);
+        _computePass.SkyboxTexture = SkyboxTexture;
         _computePass.renderPassEvent = RenderPassEvent.AfterRendering;
         _initialized = true;
     }

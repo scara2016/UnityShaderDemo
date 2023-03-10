@@ -13,6 +13,7 @@ public class ComputePass : ScriptableRenderPass
     private int _renderTargetId;
     private Matrix4x4 _cameraToWorldMatrix;
     private Matrix4x4 _cameraInverseProjectionMatrix;
+    public Texture SkyboxTexture;
     
     RenderTargetIdentifier _renderTargetIdentifier;
     int _renderTextureWidth;
@@ -31,6 +32,7 @@ public class ComputePass : ScriptableRenderPass
         var mainKernel = computeShader.FindKernel(_kernelName);
         computeShader.GetKernelThreadGroupSizes(mainKernel, out uint xGroupSize, out uint yGroupSize, out _);
         cmd.Blit(renderingData.cameraData.targetTexture, _renderTargetIdentifier);
+        computeShader.SetTexture(mainKernel, "_SkyboxTexture", SkyboxTexture);
         cmd.SetComputeTextureParam(computeShader, mainKernel, _renderTargetId, _renderTargetIdentifier);
         cmd.SetComputeMatrixParam(computeShader,Shader.PropertyToID("_CameraToWorld"), _cameraToWorldMatrix );
         cmd.SetComputeMatrixParam(computeShader,Shader.PropertyToID("_CameraInverseProjection"), _cameraInverseProjectionMatrix );
@@ -46,7 +48,7 @@ public class ComputePass : ScriptableRenderPass
     public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
     {
         var cameraTargetDescriptor = renderingData.cameraData.cameraTargetDescriptor;
-        _cameraToWorldMatrix = renderingData.cameraData.GetGPUProjectionMatrix();
+        _cameraToWorldMatrix = renderingData.cameraData.camera.cameraToWorldMatrix;
         _cameraInverseProjectionMatrix = renderingData.cameraData.GetProjectionMatrix();
         cameraTargetDescriptor.enableRandomWrite = true;
         cmd.GetTemporaryRT(_renderTargetId, cameraTargetDescriptor);
