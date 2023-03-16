@@ -20,13 +20,12 @@ public class ComputeFeature : ScriptableRendererFeature
             return;
         }
         int renderTargetId = Shader.PropertyToID("Result");
-        
         _computePass = new ComputePass(computeShader, KernelName, BlockSize, renderTargetId);
         _computePass.SkyboxTexture = SkyboxTexture;
         _computePass.renderPassEvent = RenderPassEvent.AfterRendering;
         _initialized = true;
     }
-
+    
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
         if(_initialized)

@@ -28,6 +28,7 @@ public class ComputePass : ScriptableRenderPass
     }
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
+        Debug.Log("1");
         CommandBuffer cmd = CommandBufferPool.Get();
         var mainKernel = computeShader.FindKernel(_kernelName);
         computeShader.GetKernelThreadGroupSizes(mainKernel, out uint xGroupSize, out uint yGroupSize, out _);
@@ -47,6 +48,7 @@ public class ComputePass : ScriptableRenderPass
 
     public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
     {
+        //renderingData.cameraData.camera.
         var cameraTargetDescriptor = renderingData.cameraData.cameraTargetDescriptor;
         _cameraToWorldMatrix = renderingData.cameraData.camera.cameraToWorldMatrix;
         _cameraInverseProjectionMatrix = renderingData.cameraData.GetProjectionMatrix();
