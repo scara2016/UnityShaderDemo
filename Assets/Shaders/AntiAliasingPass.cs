@@ -7,9 +7,10 @@ using UnityEngine.Rendering.Universal;
 public class AntiAliasingPass : ScriptableRenderPass
 {
     RenderTargetIdentifier source;
-    Shader AntiAliasingShader;
-    public AntiAliasingPass(RenderTargetIdentifier source){
+    Shader antiAliasingShader;
+    public AntiAliasingPass(RenderTargetIdentifier source, AntiAliasingShader){
         this.source = source;
+
     }
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
     {
