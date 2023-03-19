@@ -8,8 +8,9 @@ public class AntiAliasingPass : ScriptableRenderPass
 {
     RenderTargetIdentifier source;
     Shader antiAliasingShader;
-    public AntiAliasingPass(RenderTargetIdentifier source, AntiAliasingShader){
+    public AntiAliasingPass(RenderTargetIdentifier source, Shader antiAliasingShader){
         this.source = source;
+        this.antiAliasingShader = antiAliasingShader;
 
     }
     public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
