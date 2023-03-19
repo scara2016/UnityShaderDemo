@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecad37b82c0484a4698b3c32abba4297, type: 3}
   m_Name: ChromaticFuckeryHopefully
   m_EditorClassIdentifier: 
-  m_Active: 0
+  m_Active: 1
   settings:
     matList:
     - {fileID: 2100000, guid: 654c84cc45bcfd84f9adc0867af06567, type: 2}
