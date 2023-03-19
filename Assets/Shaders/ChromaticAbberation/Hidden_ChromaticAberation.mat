@@ -26,7 +26,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BOffset: 0.19
+    - _BOffset: 0.05
     - _GOffset: 0.1
     - _ROffset: 0.07
     m_Colors: []

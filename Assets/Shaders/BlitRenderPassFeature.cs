@@ -40,11 +40,15 @@ public class BlitRenderPassFeature : ScriptableRendererFeature
             commandBuffer.GetTemporaryRT(tempRenderTargetHandler.id, renderingData.cameraData.cameraTargetDescriptor);
             commandBuffer.GetTemporaryRT(tempOGStorage.id, renderingData.cameraData.cameraTargetDescriptor);
             Blit(commandBuffer, source, tempOGStorage.Identifier());
-            
+            int numberOfPasses = 0;
             for(int i = 0; i < matList.Count; i++)
-            {
-                Blit(commandBuffer, source, tempRenderTargetHandler.Identifier(), matList[i]);
-                Blit(commandBuffer, tempRenderTargetHandler.Identifier(), source);
+            { 
+                    Blit(commandBuffer, source, tempRenderTargetHandler.Identifier(), matList[i], 0);
+                    Blit(commandBuffer, tempRenderTargetHandler.Identifier(), source);
+                    Blit(commandBuffer, source, tempRenderTargetHandler.Identifier(), matList[i], 1);
+                    Blit(commandBuffer, tempRenderTargetHandler.Identifier(), source);
+
+
             }
             
             RenderTargetIdentifier og = new RenderTargetIdentifier();
