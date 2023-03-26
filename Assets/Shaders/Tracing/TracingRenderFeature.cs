@@ -19,7 +19,7 @@ public class TracingRenderFeature : ScriptableRendererFeature
 
     public override void Create()
     {
-        tracingPass = new TracingPass(tracingShader, blackShader);
+ //       tracingPass = new TracingPass(tracingShader, blackShader);
         tracingPass.renderPassEvent = RenderPassEvent.BeforeRenderingPostProcessing;
         
     }

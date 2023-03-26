@@ -42,8 +42,10 @@ Shader "Hidden/Tracing"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                // just invert the colors
-                col.rgb = 1 - col.rgb;
+                if(col.a == 1)
+                {
+                col = float4(1,0,0,1);
+                }
                 return col;
             }
             ENDCG

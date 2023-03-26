@@ -15,8 +15,8 @@ MonoBehaviour:
   debugShaders:
     debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
   m_RendererFeatures:
-  - {fileID: 841467744097151739}
-  m_RendererFeatureMap: fb2adc78747ead0b
+  - {fileID: 3829763505715110760}
+  m_RendererFeatureMap: 6863e7139e0d2635
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -54,7 +54,7 @@ MonoBehaviour:
   m_ClusteredRendering: 0
   m_TileSize: 32
   m_IntermediateTextureMode: 1
---- !u!114 &841467744097151739
+--- !u!114 &3829763505715110760
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -63,9 +63,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d214553a0ee7c14c88c6276e82cadf9, type: 3}
-  m_Name: TracingRenderFeature
+  m_Script: {fileID: 11500000, guid: b714d46be9b044e4a9ec6464d44169e2, type: 3}
+  m_Name: TracingComputeFeature
   m_EditorClassIdentifier: 
   m_Active: 1
-  tracingShader: {fileID: 4800000, guid: 637f56ac7ad0fa74ab8f6bdd4feb6792, type: 3}
-  blackShader: {fileID: 4800000, guid: 98412b5f7493e794aad9341252f84e9d, type: 3}
+  tracingShader: {fileID: 7200000, guid: 3588e0536f9466c499ed41a5d5cd31a4, type: 3}
