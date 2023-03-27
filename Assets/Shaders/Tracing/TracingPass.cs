@@ -9,10 +9,11 @@ public class TracingPass : ScriptableRenderPass
     private ComputeShader computeShader;
     string _kernelName;
     private int _renderTargetId;
+    private int _renderArrayId;
     RenderTargetIdentifier _renderTargetIdentifier;
+    private RenderTargetIdentifier _renderArrayIdentifier;
     int _renderTextureWidth;
     int _renderTextureHeight;
-    private RenderTexture rendTexArray;
     public TracingPass(ComputeShader computeShader, string _kernelName, int renderTargetId)
     {
         this.computeShader = computeShader;
@@ -27,7 +28,12 @@ public class TracingPass : ScriptableRenderPass
         var mainKernel = computeShader.FindKernel("TracingMain");
         computeShader.GetKernelThreadGroupSizes(mainKernel, out uint xGroupSize, out uint yGroupSize, out _);
         cmd.Blit(renderingData.cameraData.targetTexture, _renderTargetIdentifier);
-        cmd.SetComputeTextureParam(computeShader, mainKernel, "PrevFrames", rendTexArray);
+        _renderArrayIdentifier = new RenderTargetIdentifier(_renderArrayId);
+        for (int i = 0; i < 10; i++)
+        {
+            cmd.Blit(renderingData.cameraData.targetTexture, _renderArrayId, 0, i);
+        }
+        cmd.SetComputeTextureParam(computeShader, computeShader.FindKernel("TracingMain"), "PrevFrames", _renderArrayIdentifier);
         cmd.SetComputeTextureParam(computeShader, mainKernel, _renderTargetId, _renderTargetIdentifier);
         cmd.DispatchCompute(computeShader, mainKernel,
             Mathf.CeilToInt(_renderTextureWidth /(float) xGroupSize),
@@ -40,13 +46,10 @@ public class TracingPass : ScriptableRenderPass
 
     public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
     {
-        rendTexArray = new RenderTexture(renderingData.cameraData.cameraTargetDescriptor);
-        rendTexArray.dimension = TextureDimension.Tex2DArray;
-        rendTexArray.enableRandomWrite = true;
-        rendTexArray.volumeDepth = 10;
-        rendTexArray.Create();
+        Debug.Log("1");
         var cameraTargetDescriptor = renderingData.cameraData.cameraTargetDescriptor;
         cameraTargetDescriptor.enableRandomWrite = true;
+        cmd.GetTemporaryRTArray(_renderArrayId, cameraTargetDescriptor.width, cameraTargetDescriptor.height, 10, cameraTargetDescriptor.depthBufferBits, FilterMode.Bilinear,cameraTargetDescriptor.graphicsFormat, 1, true);
         cmd.GetTemporaryRT(_renderTargetId, cameraTargetDescriptor);
         _renderTargetIdentifier = new RenderTargetIdentifier(_renderTargetId);
         _renderTextureWidth = Screen.width;
@@ -55,5 +58,6 @@ public class TracingPass : ScriptableRenderPass
     public override void OnCameraCleanup(CommandBuffer cmd)
     {
         cmd.ReleaseTemporaryRT(_renderTargetId);
+        cmd.ReleaseTemporaryRT(_renderArrayId);
     }
 }

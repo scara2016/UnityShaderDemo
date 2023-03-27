@@ -14,7 +14,7 @@ public class OverlayCameraScript : MonoBehaviour
     private float t = 0;
     void FixedUpdate()
     {
-        this.transform.Rotate(Vector3.up, t+= Time.fixedDeltaTime);
+        this.transform.Rotate(Vector3.up, Time.fixedDeltaTime);
     }
     // Update is called once per frame
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
