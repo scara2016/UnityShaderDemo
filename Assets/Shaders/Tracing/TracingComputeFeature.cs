@@ -12,6 +12,7 @@ public class TracingComputeFeature : ScriptableRendererFeature
 
     public override void Create()
     {
+        Debug.Log("2");
         if (tracingShader == null)
         {
             _initialized = false;
