@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -30,17 +31,18 @@ public class TracingPass : ScriptableRenderPass
         computeShader.GetKernelThreadGroupSizes(mainKernel, out uint xGroupSize, out uint yGroupSize, out uint _zGroupSize);
         cmd.Blit(renderingData.cameraData.targetTexture, _renderTargetIdentifier);
         //_renderArrayIdentifier = new RenderTargetIdentifier(_renderArrayId);
-        Debug.Log(flag);
 
-        if (flag)
+        if (flag&& renderingData.cameraData.targetTexture!=null)
         {
             texture2DArray = new RenderTexture(renderingData.cameraData.cameraTargetDescriptor);
             texture2DArray.dimension = TextureDimension.Tex2DArray;
             texture2DArray.volumeDepth = 10;
             texture2DArray.enableRandomWrite = true;
+            texture2DArray.Create();
             for (int i = 0; i < 10; i++)
             {
-                cmd.Blit(renderingData.cameraData.targetTexture, texture2DArray, 0, i);
+                //cmd.Blit(renderingData.cameraData.targetTexture, texture2DArray);
+                Graphics.CopyTexture(renderingData.cameraData.targetTexture, 0, texture2DArray, i);
             }
             cmd.SetComputeTextureParam(computeShader, computeShader.FindKernel("TracingMain"), "PrevFrames", texture2DArray);
 

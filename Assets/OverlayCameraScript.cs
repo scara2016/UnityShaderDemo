@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,9 @@ using UnityEngine.PlayerLoop;
 public class OverlayCameraScript : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-     //   this.GetComponent<Camera>().clearFlags = CameraClearFlags.Nothing;
+        this.GetComponent<Camera>().
     }
 
     private float t = 0;

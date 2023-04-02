@@ -22,5 +22,5 @@ void TracingMain (uint3 id : SV_DispatchThreadID)
     //tempResult = tempResult/10;
     //Result[id.xy] = tempResult;
     //Result[id.xy] = PrevFrames[uint3(id.xy,2)];
-    Result[id.xy] = PrevFrames[id.xy,0];
+    Result[id.xy] = PrevFrames[uint3(id.xy,1)];
 }
