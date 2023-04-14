@@ -45,8 +45,8 @@ public class BlitRenderPassFeature : ScriptableRendererFeature
             { 
                     Blit(commandBuffer, source, tempRenderTargetHandler.Identifier(), matList[i], 0);
                     Blit(commandBuffer, tempRenderTargetHandler.Identifier(), source);
-                    Blit(commandBuffer, source, tempRenderTargetHandler.Identifier(), matList[i], 1);
-                    Blit(commandBuffer, tempRenderTargetHandler.Identifier(), source);
+//                    Blit(commandBuffer, source, tempRenderTargetHandler.Identifier(), matList[i], 1);
+//                    Blit(commandBuffer, tempRenderTargetHandler.Identifier(), source);
 
 
             }

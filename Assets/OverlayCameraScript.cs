@@ -6,11 +6,6 @@ using UnityEngine.PlayerLoop;
 
 public class OverlayCameraScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private void Awake()
-    {
-        this.GetComponent<Camera>().
-    }
 
     private float t = 0;
     void FixedUpdate()
