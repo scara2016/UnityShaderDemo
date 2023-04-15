@@ -1,0 +1,29 @@
+// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel TracingMain
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+
+RWTexture2D<float4> Result;
+RWTexture2DArray<float4> PrevFrames;
+float4 tempResult;
+[numthreads(8,8,1)]
+void TracingMain (uint3 id : SV_DispatchThreadID)
+{
+    // TODO: insert actual code here!
+    for (int  i=0;i<9;i++)
+    {
+        PrevFrames[uint3(id.x,id.y,i)] = PrevFrames[uint3(id.x,id.y,i+1)];
+        PrevFrames[uint3(id.x,id.y,i)] = float4((PrevFrames[uint3(id.x,id.y,i)].x*0.33),(PrevFrames[uint3(id.x,id.y,i)].y*0.33),(PrevFrames[uint3(id.x,id.y,i)].z*0.33),1);
+        
+    }
+    PrevFrames[uint3(id.xy,9)] = Result[id.xy];
+    for (int i=0;i<10;i++)
+    {
+        tempResult += PrevFrames[uint3(id.xy,i)];
+    }
+    tempResult = tempResult/10;
+    Result[id.xy] = tempResult;
+    //Result[id.xy] = PrevFrames[uint3(id.xy,1)] + Result[id.xy];
+    //Result[id.xy] = PrevFrames[uint3(id.xy,1)];
+}
